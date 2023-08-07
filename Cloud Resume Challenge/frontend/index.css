@@ -1,0 +1,298 @@
+/* Global Styles */
+
+@font-face {
+  font-family: 'RalewayMedium';
+  src: url(fonts/Raleway-Medium.ttf);
+} 
+@font-face {
+    font-family: 'RalewaySemiBold';
+    src: url(fonts/Raleway-SemiBold.ttf);
+  } 
+
+@font-face {
+  font-family: 'HattonMedium';
+  src: url(fonts/PP\ Hatton\ Medium\ 500.otf);
+}
+
+@font-face {
+  font-family: 'LatoLight';
+  src: url(fonts/Lato-Light.ttf);
+}
+
+@font-face {
+  font-family: 'LatoRegular';
+  src: url(fonts/Lato-Regular.ttf);
+}
+
+@keyframes animateGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+
+/* Header Styles */
+header {
+  text-align: center;
+  padding: 30px 0;
+  background: linear-gradient(45deg, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%);
+  color: #ffffff;
+  
+  /* Header Gradient Animation */
+  background-size: 200% auto;
+  animation: animateGradient 5s infinite alternate;
+}
+
+h1 {
+  font-family: 'RalewayMedium', sans-serif;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: 'HattonMedium', sans-serif;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* Contact Info Styles */
+.contact-info {
+  font-family: 'LatoLight', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.contact-info span {
+  margin: 5px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+/* Section Styles */
+.section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin: 0 auto;
+  transition: transform 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.section:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 1;
+}
+
+.section:hover:before {
+  transform: translateX(100%);
+}
+
+.section:not(:hover):before {
+  left: 100%;
+  opacity: 0;
+}
+
+.section:hover,
+.section:active {
+  transform: translateY(10px);
+}
+
+.section h2 {
+  color: #333333;
+  font-size: 32px;
+}
+
+/* About Section Styles */
+.section p {
+  font-family: 'LatoRegular', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Skills Section Styles */
+ul.skills {
+  list-style: none;
+  padding: 0;
+}
+
+ul.skills li {
+  font-family: 'LatoRegular', sans-serif;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background: linear-gradient(45deg,#7b5fac, #8f6aae, #a86aa4, #cc6b8e);
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+/* Education Section Styles */
+.section p {
+  font-size: 18px;
+}
+
+/* Certifications Section Styles */
+ul.certifications {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0;
+}
+
+ul.certifications li {
+  flex: 0 0 150px;
+  height: 270px;
+  margin-bottom: 10px;
+  padding: 0;
+  background-color: #333333;
+  color: #ffffff;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+ul.certifications li div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* Experience Section Styles */
+.job {
+  margin-bottom: 30px;
+}
+
+.role-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.dates-worked {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #999999;
+}
+
+.bullet-points {
+    font-family: 'LatoRegular', sans-serif;
+    padding: 10px 20px; /* Increase padding for space between text and border */
+  font-size: 16px;
+  
+}
+
+.bullet-points li {
+    margin-bottom: 10px; /* Add vertical space between list items */
+    
+  }
+
+/* Visitor Counter */
+  #counter {
+    margin: 10px 0;  
+}
+
+.footer {
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.footer .counter-container {
+  display: inline-block;
+  background: linear-gradient(45deg,#7b5fac, #8f6aae, #a86aa4, #cc6b8e);
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  font-family: 'LatoLight', sans-serif;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+
+/* Styling for Sleek, Modern, Colorful Design */
+body {
+  margin: 0 25%;
+  padding: 0;
+  color: #333333;
+  background-color: #f2f2f2;
+}
+
+.section h2 {
+  margin-bottom: 20px;
+}
+
+.contact-info span {
+  margin: 5px 10px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.section p {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+ul.skills li {
+  font-size: 20px;
+  margin-right: 15px;
+  padding: 10px 15px;
+  border-radius: 50px;
+}
+
+.section p {
+  font-size: 24px;
+}
+
+ul.skills {
+  padding-left: 40px;
+}
+
+/* Experience Section */
+.job {
+  border-left: 5px solid #666666;
+  padding-left: 15px;
+}
+
+.role-title {
+font-family: 'RalewaySemiBold', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dates-worked {
+font-family: 'LatoRegular', sans-serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #666666;
+}
+
+.bullet-points {
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-left: 50px;
+  background: linear-gradient(45deg,#7b5fac, #8f6aae, #a86aa4, #cc6b8e);
+  color: #ffffff;
+  border-radius: 10px;
+}
