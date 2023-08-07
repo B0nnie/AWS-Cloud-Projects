@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: HTTP API Gateway, Lambda function, and DynamoDB table to update Views hit counter for cloud resume challenge webpage. 
+
+
+Resources:
+  CounterFunction:
+    Type: AWS::Serverless::Function
+    Description: Increments the hit counter by 1 in DB and sends this updated value back for the counter UI.
+    Properties:
+      FunctionName: UpdateAndRetrieveHitCount_
+      CodeUri: source/
+      Handler: counter.lambda_handler
+      Runtime: python3.11
+      Timeout: 120
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable 
+      Tags:
+        Name: cloudresumechallenge
+      Events:
+        ExplicitApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /
+            Method: GET
+   
+
+  HttpApi:      
+    Type: AWS::Serverless::HttpApi
+    Properties: 
+      Name: Cloud_Resume_Challenge_
+      Tags:
+        Name: cloudresumechallenge  
+      CorsConfiguration:
+        AllowOrigins:
+          - "https://www.cloudresumechallenge.csr4w.com"
+        AllowMethods:
+        - GET 
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 2
+        ThrottlingRateLimit: 1    
+
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Cloud_Resume_Challenge_ 
+      Tags: 
+        - Key: "name"
+          Value: "cloudresumechallenge"
+      AttributeDefinitions: 
+        - AttributeName: Page
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Page
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+
+Outputs:
+  HttpEndpoint:
+    Description: API HTTP Gateway endpoint URL
+    Value: !GetAtt HttpApi.ApiEndpoint
+  HttpApiId:
+    Description: Api id of HttpApi
+    Value:
+      Ref: HttpApi  
+  CounterFunction:
+    Description: Counter Lambda Function ARN
+    Value: !GetAtt CounterFunction.Arn
+  CounterFunctionIamRole:
+    Description: "Implicit IAM Role created for Counter function"
+    Value: !GetAtt CounterFunctionRole.Arn
