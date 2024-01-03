@@ -56,7 +56,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Build and Deploy SAM
-        working-directory: Cloud-Resume-Challenge
+        working-directory: Cloud-Resume-Challenge/backend
         run: |
           sam build
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
