@@ -57,9 +57,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Build and Deploy SAM
+      - name: Build and Deploy to SAM
         working-directory: Cloud-Resume-Challenge/backend
         run: |
           sam build --cached --parallel
           sam validate --lint
-          sam deploy --no-confirm-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }}
+          sam deploy --no-confirm-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }} --capabilities CAPABILITY_IAM 
