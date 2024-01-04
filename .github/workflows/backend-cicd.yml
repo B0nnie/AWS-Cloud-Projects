@@ -14,9 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set working directory
-        run: cd Cloud-Resume-Challenge/backend 
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -33,6 +30,9 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
+
+      - name: Set working directory
+        run: cd Cloud-Resume-Challenge/backend     
 
       - name: Test API integration
         run: pytest Cloud-Resume-Challenge/backend/tests/integration/test_api_integration.py
