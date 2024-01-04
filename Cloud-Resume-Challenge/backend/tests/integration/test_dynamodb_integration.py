@@ -2,8 +2,7 @@ import json
 import boto3
 import moto
 import pytest
-#from backend.source.counter import lambda_handler
-from AWS-Cloud-Projects.Cloud-Resume-Challenge.backend.source.counter import lambda_handler
+from ...source.counter import  lambda_handler
 
 @pytest.fixture
 def dynamodb_mock():
