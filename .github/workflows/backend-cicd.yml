@@ -60,5 +60,6 @@ jobs:
       - name: Build and Deploy to SAM
         working-directory: Cloud-Resume-Challenge/backend
         run: |
-          sam build
-          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+          sam build --cached --parallel
+          sam validate --lint
+          sam deploy --no-confirm-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }} --capabilities CAPABILITY_IAM 

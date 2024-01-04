@@ -51,7 +51,7 @@ Resources:
       TableName: Cloud_Resume_Challenge_ 
       Tags: 
         - Key: "name"
-          Value: "c"
+          Value: "cloudresumechallenge"
       AttributeDefinitions: 
         - AttributeName: Page
           AttributeType: S
