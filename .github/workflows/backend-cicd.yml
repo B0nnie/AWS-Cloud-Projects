@@ -61,7 +61,4 @@ jobs:
         working-directory: Cloud-Resume-Challenge/backend
         run: |
           sam build
-          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-
-
-
+          sam deploy --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --no-confirm-changeset --no-fail-on-empty-changeset
