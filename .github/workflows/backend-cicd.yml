@@ -1,0 +1,65 @@
+name: Backend Tests for Updates to the Stack and to Build and Deploy to AWS
+
+on:
+  push:
+    branches:
+    - backend-crc
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: python -m pip install -r Cloud-Resume-Challenge/backend/tests/requirements.txt
+
+      - name: Set AWS_SAM_STACK_NAME
+        run: echo "AWS_SAM_STACK_NAME=${{ secrets.AWS_SAM_STACK_NAME }}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials and region
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
+
+      - name: Test API integration
+        run: pytest Cloud-Resume-Challenge/backend/tests/integration/test_api_integration.py
+
+  build-and-deploy-backend:
+    needs: test-backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set up AWS SAM
+        uses: aws-actions/setup-sam@v1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with: 
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build and Deploy to SAM
+        working-directory: Cloud-Resume-Challenge/backend
+        run: |
+          sam build --cached --parallel
+          sam validate --lint
+          sam deploy --no-confirm-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }} --capabilities CAPABILITY_IAM 
