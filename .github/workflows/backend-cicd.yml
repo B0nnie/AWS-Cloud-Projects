@@ -34,6 +34,11 @@ jobs:
       - name: Test API integration
         run: pytest Cloud-Resume-Challenge/backend/tests/integration/test_api_integration.py
 
+      - name: Test API integration
+        run: pytest Cloud-Resume-Challenge/backend/tests/integration/test_dynamodb_integration.py
+
+
+
   build-and-deploy-backend:
     needs: test-backend
     runs-on: ubuntu-latest
