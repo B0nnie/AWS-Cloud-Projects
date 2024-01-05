@@ -46,7 +46,7 @@ jobs:
         run: |
           cd Cloud_Resume_Challenge
           pip install -e .
-          pytest Cloud_Resume_Challenge/backend/tests/integration/test_dynamodb_integration.py
+          pytest backend/tests/integration/test_dynamodb_integration.py
 
 
   build-and-deploy-backend:
