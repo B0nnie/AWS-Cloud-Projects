@@ -46,7 +46,10 @@ jobs:
       #####UNIT TESTS#####
       - name: Test DynamoDB operations
         run: pytest Cloud_Resume_Challenge/backend/tests/unit/test_dynamodb_operations.py
-        
+
+      - name: Test response JSON construction
+        run: pytest Cloud_Resume_Challenge/backend/tests/unit/test_dynamodb_operations.py  
+
 
   build-and-deploy-backend:
     needs: test-backend
