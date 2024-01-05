@@ -37,7 +37,7 @@ jobs:
       - name: Test DynamoDB integration
         run: |
           cd Cloud-Resume-Challenge
-          pytest Cloud-Resume-Challenge/backend/tests/integration/test_dynamodb_integration.py
+          pytest backend/tests/integration/test_dynamodb_integration.py
 
   build-and-deploy-backend:
     needs: test-backend
