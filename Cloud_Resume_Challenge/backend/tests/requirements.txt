@@ -2,4 +2,3 @@ pytest
 boto3
 requests
 moto
-Cloud_Resume_Challenge
