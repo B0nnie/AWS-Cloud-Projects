@@ -34,19 +34,19 @@ jobs:
       - name: Test API integration
         run: pytest Cloud_Resume_Challenge/backend/tests/integration/test_api_integration.py
 
-     # - name: Install Packages
-     #   run: |
-     #     cd Cloud_Resume_Challenge
-     #     pip install -e .
-
-     # - name: Test DynamoDB integration
-     #   run: pytest Cloud_Resume_Challenge/backend/tests/integration/test_dynamodb_integration.py
-
-      - name: Install Packages & Test DynamoDB integration
+      - name: Install Packages
         run: |
           cd Cloud_Resume_Challenge
           pip install -e .
-          pytest backend/tests/integration/test_dynamodb_integration.py
+
+      - name: Test DynamoDB integration
+        run: pytest Cloud_Resume_Challenge/backend/tests/integration/test_dynamodb_integration.py
+
+     # - name: Install Packages & Test DynamoDB integration
+     #   run: |
+     #     cd Cloud_Resume_Challenge
+     #     pip install -e .
+     #     pytest backend/tests/integration/test_dynamodb_integration.py
 
 
   build-and-deploy-backend:
@@ -77,4 +77,4 @@ jobs:
         run: |
           sam build --cached --parallel
           sam validate --lint
-          sam deploy --no-confirm-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }} --capabilities CAPABILITY_IAM 
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --resolve-s3 --stack-name ${{ secrets.AWS_SAM_STACK_NAME }} --s3-prefix ${{ secrets.S3_PREFIX }} --region ${{ secrets.AWS_REGION }} --capabilities CAPABILITY_IAM 
