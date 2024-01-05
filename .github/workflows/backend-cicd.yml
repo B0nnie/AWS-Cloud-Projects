@@ -22,7 +22,7 @@ jobs:
       - name: Debug Workflow
         run: |
           ls -R
-          exit 0
+          exit 1
 
       - name: Install dependencies
         run: python -m pip install -r Cloud_Resume_Challenge/backend/tests/requirements.txt
