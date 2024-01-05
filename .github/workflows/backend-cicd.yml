@@ -38,7 +38,7 @@ jobs:
         run: cd Cloud_Resume_Challenge
 
       - name: Install Packages
-        run: python pip install -e .
+        run:  pip install -e .
 
       - name: Test DynamoDB integration
         run: pytest Cloud_Resume_Challenge/backend/tests/integration/test_dynamodb_integration.py
