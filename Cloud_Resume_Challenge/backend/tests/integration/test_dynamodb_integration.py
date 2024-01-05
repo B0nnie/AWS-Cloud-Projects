@@ -2,6 +2,16 @@ import json
 import boto3
 import moto
 import pytest
+
+
+import sys
+
+# Print the current sys.path
+print("Current sys.path:")
+for path in sys.path:
+    print(path)
+
+    
 from Cloud_Resume_Challenge.backend.source.counter import lambda_handler
 
 @pytest.fixture
