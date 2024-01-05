@@ -6,7 +6,7 @@ on:
     - backend-crc
 
 jobs:
-  job-1-test-backend:
+  test-backend:
     runs-on: ubuntu-latest
     timeout-minutes: 2
 
@@ -44,7 +44,7 @@ jobs:
         run: pytest Cloud_Resume_Challenge/backend/tests/integration/test_dynamodb_integration.py
 
 
-  job-2-build-and-deploy-backend:
+  build-and-deploy-backend:
     needs: test-backend
     runs-on: ubuntu-latest
     timeout-minutes: 2
