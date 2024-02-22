@@ -1,0 +1,246 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploying a car rental chatbot using an Amazon Lex bot.
+    
+Resources:
+
+#Lex Bot
+  OrderRentalCarChatbot:
+    Type: AWS::Lex::Bot
+    Properties:
+      Name: "carrentalchatbot"
+      Description: "Amazon Lex chatbot used to order rental cars"
+      BotTags:
+      - Key: name
+        Value: carrentalchatbot
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/LexV2BotRole"
+      DataPrivacy:
+        ChildDirected: false
+      IdleSessionTTLInSeconds: 300
+      AutoBuildBotLocales: true
+      BotLocales:
+        - LocaleId: "en_US"
+          NluConfidenceThreshold: 0.40
+          VoiceSettings:
+            VoiceId: "Joanna"
+          SlotTypes:
+            - Name: "CarTypeValues"
+              Description: "Type of vehicle user intends to book"
+              SlotTypeValues:
+                - SampleValue:
+                    Value: Economy
+                - SampleValue:
+                    Value: Sedan
+                - SampleValue:
+                    Value: Sports Car
+                - SampleValue:
+                    Value: SUV    
+                - SampleValue:
+                    Value: Electric      
+              ValueSelectionSetting:
+                ResolutionStrategy: ORIGINAL_VALUE
+          Intents:
+            - Name: "Greetings"
+              Description: "Intent is to utter friendly greeting statements"
+              SampleUtterances:
+                - Utterance: "Hi"
+                - Utterance: "Hello"
+                - Utterance: "Hi there"
+                - Utterance: "Hey"
+              IntentConfirmationSetting:
+                IsActive: true
+                PromptSpecification:
+                  MaxRetries: 2
+                  AllowInterrupt: false
+                  MessageGroupsList:
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Hi! I'm a sample car rental chatbot. Would you like to pretend to order a rental car with me?" 
+                      Variations:
+                        - PlainTextMessage: 
+                            Value: "Hey there! My sole existence is to be a sample car rental bot. Would you like to pretend to order a rental car with me?"
+                        - PlainTextMessage:
+                            Value: "Why hello there! I haven't yet gained sentience nor caused the singularity, so would you like to pretend to order a rental car with me?"
+                ConfirmationNextStep:
+                  DialogAction: 
+                    Type: "StartIntent"
+                  Intent: 
+                    Name: "OrderRentalCar"
+                DeclinationResponse:
+                  AllowInterrupt: false
+                  MessageGroupsList:
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Aw, okay. I was hoping to fulfill my purpose for existing but maybe some other time. Bye, take care!"
+            - Name: "OrderRentalCar"
+              Description: "Intent is to order a rental car"
+              SampleUtterances:
+                - Utterance: "I want to rent a car"
+                - Utterance: "Can I book a car rental?"
+                - Utterance: "I need to reserve a vehicle"
+                - Utterance: "I'm looking to rent a car"
+                - Utterance: "rent car"
+                - Utterance: "rent vehicle"
+                - Utterance: "car rental"
+                - Utterance: "yes"
+                - Utterance: "yeah"
+                - Utterance: "yep"
+              SlotPriorities:
+                - Priority: 1
+                  SlotName: CarType 
+                - Priority: 2
+                  SlotName: PickUpCity  
+                - Priority: 3
+                  SlotName: PickUpDate
+                - Priority: 4
+                  SlotName: ReturnDate
+                - Priority: 5
+                  SlotName: RenterName  
+              InitialResponseSetting:  
+                InitialResponse:
+                  AllowInterrupt: false
+                  MessageGroupsList: 
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Great, I'm happy to help you with that!"
+              Slots:
+                - Name: "CarType"
+                  Description: "Type of vehicle user wants to rent"
+                  SlotTypeName: "CarTypeValues"
+                  ValueElicitationSetting:
+                    SlotConstraint: "Required"
+                    PromptSpecification:
+                      MessageGroupsList:
+                        - Message:
+                            ImageResponseCard:
+                              Title: "What type of vehicle would you like to rent?"
+                              Buttons:
+                                - Text: "Economy"
+                                  Value: "Economy"
+                                - Text: "Sedan"
+                                  Value: "Sedan"
+                                - Text: "SUV"
+                                  Value: "SUV"
+                                - Text: "Sports Car"
+                                  Value: "Sports Car"
+                                - Text: "Electric"
+                                  Value: "Electric"                                                                                                                                
+                      MaxRetries: 2
+                      AllowInterrupt: false
+                - Name: "PickUpDate"
+                  Description: "Date rental period will start"
+                  SlotTypeName: "AMAZON.Date"
+                  ValueElicitationSetting:
+                    SlotConstraint: "Required"
+                    PromptSpecification:
+                      MessageGroupsList:
+                        - Message:
+                            PlainTextMessage:
+                              Value: "What day will you PICK UP your rental?"
+                      MaxRetries: 2
+                      AllowInterrupt: false
+                - Name: "ReturnDate"
+                  Description: "Date rental period will end"
+                  SlotTypeName: "AMAZON.Date"
+                  ValueElicitationSetting:
+                    SlotConstraint: "Required"
+                    PromptSpecification:
+                      MessageGroupsList:
+                        - Message:
+                            PlainTextMessage:
+                              Value: "What day will you RETURN your rental?"
+                      MaxRetries: 2
+                      AllowInterrupt: false
+                - Name: "PickUpCity"
+                  Description: "City in which vehicle will be rented"
+                  SlotTypeName: "AMAZON.City"
+                  ValueElicitationSetting:
+                    SlotConstraint: "Required"
+                    PromptSpecification:
+                      MessageGroupsList:
+                        - Message:
+                            PlainTextMessage:
+                              Value: "In what city would you like to rent a car?"
+                      MaxRetries: 2
+                      AllowInterrupt: false
+                - Name: "RenterName"
+                  Description: "Name under which vehicle will be rented"
+                  SlotTypeName: "AMAZON.FirstName"
+                  ValueElicitationSetting:
+                    SlotConstraint: "Required"
+                    PromptSpecification:
+                      MessageGroupsList:
+                        - Message:
+                            PlainTextMessage:
+                              Value: "Under what name should I make this reservation?"
+                      MaxRetries: 2
+                      AllowInterrupt: false                      
+              IntentConfirmationSetting:
+                PromptSpecification:
+                  MessageGroupsList:
+                    - Message:
+                        PlainTextMessage:
+                          Value: "{PickUpCity} adventure? Check. {CarType} rental? Check. Let's make it happen! I have you down for {PickUpDate} to {ReturnDate} under the name {RenterName}. Should I go ahead and book the reservation?"
+                  MaxRetries: 2
+                  AllowInterrupt: false
+                DeclinationResponse:
+                  MessageGroupsList:
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Okay, this reservation will not be booked."
+                  AllowInterrupt: false
+              IntentClosingSetting:
+                IsActive: true
+                ClosingResponse:
+                  AllowInterrupt: false
+                  MessageGroupsList: 
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Great! I imaginarily booked a rental car for you. You're all set. Take care!" 
+            - Name: "Goodbye"
+              Description: "Intent is to utter friendly farewell statements"
+              SampleUtterances:
+                - Utterance: "Bye"
+                - Utterance: "Goodbye"
+                - Utterance: "See ya"
+              IntentClosingSetting:
+                IsActive: true
+                ClosingResponse:
+                  AllowInterrupt: false
+                  MessageGroupsList: 
+                    - Message:
+                        PlainTextMessage:
+                          Value: "Bye! It was nice chatting with you."             
+            - Name: "FallbackIntent"
+              Description: "Default intent when no other intent matches"
+              ParentIntentSignature: "AMAZON.FallbackIntent"
+              IntentClosingSetting:
+                IsActive: true
+                ClosingResponse:
+                  AllowInterrupt: false
+                  MessageGroupsList: 
+                    - Message:
+                        PlainTextMessage:
+                          Value: "It looks like I'm not able to assist you at the moment."
+
+#Lex Bot Version
+  RentalCarChatbotVersion1:
+    Type: AWS::Lex::BotVersion
+    Properties:
+      BotId: !Ref OrderRentalCarChatbot
+      Description: "No user input validation"
+      BotVersionLocaleSpecification: 
+        - BotVersionLocaleDetails: 
+            SourceBotVersion: "DRAFT"
+          LocaleId: "en_US"
+
+#Lex Bot Alias for Deployed Versions
+  DeployedChatbotAlias:
+    Type: AWS::Lex::BotAlias
+    Properties:
+      BotAliasName: "DeployedChatbotAlias"
+      BotAliasTags: 
+        - Key: "name"
+          Value: "carrentalchatbot"
+      BotId: !Ref OrderRentalCarChatbot
+      BotVersion: "10"
+      Description: "Use for deployed (non-draft) versions of bot"
