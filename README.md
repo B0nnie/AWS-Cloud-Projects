@@ -20,12 +20,12 @@ A web-based resume page written in HTML and styled with CSS, deployed as a stati
 
 <br>
 
-# Technologies
+# Tech Stack
 
-- Cloud Providers: AWS
-- Deployment: Serverless
-- Infrastructure as Code: Serverless Application Model (SAM)
+- Cloud Providers: AWS, GCP
+- Deployments: Serverless
+- Infrastructure as Code (IaC) tools: Serverless Application Model (SAM), CloudFormation, Terraform
 - CI/CD: GitHub Actions
 - Databases: DynamoDB
-- Languages: Python, JavaScript, YAML, HTML, CSS
+- Languages: Python, JavaScript, YAML, HTML, CSS, HashiCorp Configuration Language (HCL)
 
