@@ -5,3 +5,8 @@ variable "region" {
 variable "project_name" {
   default = "carrentalchatbot"
 }
+
+variable "template_file_path" {
+  type    = string
+  default = "lexv2chatbot_cf.yml"
+}
