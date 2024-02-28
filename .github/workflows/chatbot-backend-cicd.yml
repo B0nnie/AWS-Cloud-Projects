@@ -6,7 +6,24 @@ on:
     - backend-chatbot
 
 jobs:
+
+#Authenticate to GCP
+  gcp-authentication:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+        service_account: '${{ secrets.GCP_GITHUB_SERVICE_ACCOUNT }}'
+
+
+#Run Terraform Tests
   terraform-tests:
+    needs: gcp-authentication
     runs-on: ubuntu-latest
     timeout-minutes: 2
 
