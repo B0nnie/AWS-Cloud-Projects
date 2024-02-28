@@ -8,6 +8,7 @@ on:
 jobs:
   terraform-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
 
     steps:
       - name: Checkout code
@@ -19,7 +20,9 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Initialize Terraform
-        run: terraform init
+        run: |
+          cd Car_Rental_Chatbot
+          terraform init
 
       - name: Run Terraform Tests
         run: terraform test -test-directory=car_rental_chatbot/tests/unit
