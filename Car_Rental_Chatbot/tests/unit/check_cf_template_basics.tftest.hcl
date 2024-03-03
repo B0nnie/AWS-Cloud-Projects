@@ -1,16 +1,10 @@
-  data "aws_cloudformation_stack" "lexv2_chatbot_template" {
-  name = "lexv2_chatbot_template"
-}
-
 #Check that CloudFormation template exists
 run "check_cf_template_exists" {
-
-
 
   command = plan
 
   assert {
-    condition     = can(data.aws_cloudformation_stack.lexv2_chatbot_template.template_body)
+    condition     = can(aws_cloudformation_stack.lexv2_chatbot_template.template_body)
     error_message = "Template body is missing"
   }
 
@@ -34,7 +28,7 @@ run "check_cf_template_name" {
   command = plan
 
   assert {
-    condition     = data.aws_cloudformation_stack.lexv2_chatbot_template.name == "${var.project_name}-cf"
+    condition     = aws_cloudformation_stack.lexv2_chatbot_template.name == "${var.project_name}-cf"
     error_message = "Template name changed"
   }
 }
