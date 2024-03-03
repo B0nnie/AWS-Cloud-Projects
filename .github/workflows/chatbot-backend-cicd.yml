@@ -51,10 +51,20 @@ jobs:
     needs: run-terraform-tests
     runs-on: ubuntu-latest
     timeout-minutes: 2
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_GITHUB_SERVICE_ACCOUNT }}'
+
         
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
