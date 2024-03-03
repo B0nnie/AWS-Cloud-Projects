@@ -35,6 +35,12 @@ jobs:
           cd Car_Rental_Chatbot
           terraform init
 
+      - name: Configure AWS credentials and region
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}          
+
       - name: Run Terraform Tests
         run: |
           cd Car_Rental_Chatbot
