@@ -36,4 +36,6 @@ jobs:
           terraform init
 
       - name: Run Terraform Tests
-        run: terraform test -test-directory=tests/unit
+        run: |
+          cd Car_Rental_Chatbot
+          terraform test -test-directory=tests/unit
