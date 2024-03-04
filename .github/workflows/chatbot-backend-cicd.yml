@@ -79,4 +79,4 @@ jobs:
 
       - name: Deploy to AWS
         working-directory: Car_Rental_Chatbot
-        run: terraform plan
+        run: terraform apply -auto-approve
