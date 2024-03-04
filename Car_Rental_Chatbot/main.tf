@@ -36,7 +36,7 @@ resource "aws_cloudformation_stack" "lexv2_chatbot_template" {
   name = "${var.project_name}-cf"
   #parameters = var.parameters
   #capabilities = var.capabilities 
-  template_body = file("lexv2chatbot_cf.yml")
+  template_body = file(var.template_file_path)
 
   tags = {
     name = var.project_name

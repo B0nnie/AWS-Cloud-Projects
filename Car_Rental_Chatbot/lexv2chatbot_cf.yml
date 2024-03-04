@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Deploying a car rental chatbot using an Amazon Lex bot.
+Description: Deploys an Amazon Lex bot used to order rental cars.
     
 Resources:
 
@@ -8,7 +8,7 @@ Resources:
     Type: AWS::Lex::Bot
     Properties:
       Name: "carrentalchatbot"
-      Description: "Amazon Lex chatbot used to order rental cars"
+      Description: "Demo Amazon Lex chatbot to order rental cars."
       BotTags:
       - Key: name
         Value: carrentalchatbot
@@ -243,4 +243,4 @@ Resources:
           Value: "carrentalchatbot"
       BotId: !Ref OrderRentalCarChatbot
       BotVersion: "10"
-      Description: "Use for deployed (non-draft) versions of bot"
+      Description: "This alias is used for deployed (non-draft) versions of the bot."

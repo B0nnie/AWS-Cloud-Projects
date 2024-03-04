@@ -1,0 +1,82 @@
+name: Terraform Tests
+
+on:
+  push:
+    branches:
+    - backend-chatbot
+
+jobs:
+  run-terraform-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    #Authenticate to GCP
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_GITHUB_SERVICE_ACCOUNT }}'
+
+      #Run Terraform tests      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Initialize Terraform
+        run: |
+          cd Car_Rental_Chatbot
+          terraform init
+
+      - name: Configure AWS credentials and region
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}          
+
+      - name: Run Terraform Tests
+        run: |
+          cd Car_Rental_Chatbot
+          terraform test -test-directory=tests/unit
+
+
+  deploy-to-aws:
+    needs: run-terraform-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_GITHUB_SERVICE_ACCOUNT }}'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Initialize Terraform
+        run: |
+          cd Car_Rental_Chatbot
+          terraform init          
+
+      - name: Deploy to AWS
+        working-directory: Car_Rental_Chatbot
+        run: terraform apply -auto-approve
