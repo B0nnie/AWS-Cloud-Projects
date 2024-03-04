@@ -33,7 +33,7 @@ resource "aws_iam_role_policy_attachment" "lex_bot_policy" {
 
 # Link to CloudFormation LexV2 chatbot template
 resource "aws_cloudformation_stack" "lexv2_chatbot_template" {
-  name = "${var.project_name}-cf"
+  name = "cf"
   #parameters = var.parameters
   #capabilities = var.capabilities 
   template_body = file(var.template_file_path)

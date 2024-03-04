@@ -8,5 +8,5 @@ variable "project_name" {
 
 variable "template_file_path" {
   type    = string
-  default = "lexv2chatbot_cf.yml"
+  default = "lexv2chatbot1_cf.yml"
 }
