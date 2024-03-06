@@ -39,4 +39,6 @@ A web-based resume page written in HTML and styled with CSS, deployed as a stati
 - CI/CD: GitHub Actions
 - Databases: DynamoDB
 - Languages: Python, JavaScript, YAML, HTML, CSS, HashiCorp Configuration Language (HCL)
+- Prompt Engineering: Gemini, ChatGPT
+- APIs: Slack
 
